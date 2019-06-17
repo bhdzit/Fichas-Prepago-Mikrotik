@@ -1,29 +1,51 @@
 package view;
 
+import com.sun.jmx.defaults.JmxProperties;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.prefs.Preferences;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.AncestorListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicBorders;
+import javax.swing.plaf.basic.BasicListUI;
+import javax.swing.table.DefaultTableModel;
 
 
 public class Contenedor extends JFrame{
+    private int width = 350;
+    private int height = 200;
     public JPanel titelbar=new JPanel();
-    public JPanel content= new JPanel();
+    public JPanel content= new DevicesView();
+    
     
     public Contenedor(){
-        setSize(800, 800);
+        
+       // guardarDispositivos.remove("1");
+        setSize(800, 600);
         setLayout(null);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTitle("Fichas Prepago Mikrotik");
         titelbar.setBounds(0,0, 800, 100);
         titelbar.setLayout(null);
-        titelbar.setBackground(Color.yellow);
+        titelbar.setBackground(Color.lightGray);
         
         ImageIcon devicesimg= new ImageIcon(getClass().getResource("/img/devices.png"));
        
@@ -34,10 +56,13 @@ public class Contenedor extends JFrame{
         devices.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent me) {
-                
-               content=new Devices();
+              getContentPane().remove(content); 
+              content=new DevicesView();
               // getContentPane().remove(content.getComponentCount());
-               getContentPane().repaint();
+             content.updateUI();
+              getContentPane().add(content);
+              getContentPane().repaint();
+               
 
             }   
          });
@@ -48,13 +73,12 @@ public class Contenedor extends JFrame{
      
         titelbar.add(devices);
         
-        content.setBounds(0, 100, 800, 700);
-        content.setBackground(Color.BLACK);
-        
-        getContentPane().add(content);
         getContentPane().add(titelbar);
-        
+        getContentPane().add(content); 
     }
+    
+    
+    
    
     public static void main(String [] args){
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -65,12 +89,6 @@ public class Contenedor extends JFrame{
         });
     }
 }
-class Devices extends JPanel{
-    public Devices(){
-        System.err.println("dadasdasd");
-        setBackground(Color.yellow);
-    }
 
 
 
-}
